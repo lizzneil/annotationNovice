@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.ann.example</groupId>
+    <artifactId>generate-code-client</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ann.examples</groupId>
+            <artifactId>generate-code-processor</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+            <!-- https://mvnrepository.com/artifact/com.google.auto.service/auto-service -->
+            <!--  _注意_:
+                    在引入apt插件后，要去掉java的编译时注解，只能二选其一，否则apt会生成一次代码，java编译时注解还会生成一次代码，将重复报错。
+
+                    用apt插件，去掉processor中的@AutoService(Processor.class)注解。
+                    用java编译时注解，在processor引入@AutoService(Processor.class)注解，不需要apt插件
+             -->
+            <!--dependency>
+                <groupId>com.google.auto.service</groupId>
+                <artifactId>auto-service</artifactId>
+                <version>1.0-rc4</version>
+            </dependency-->
+            <!--https://github.com/square/javapoet-->
+            <!-- 这个是用来生成代码的。 不用它直接用StringBuffer来写也没问题。用它更方便。
+                同类的还有
+                bcel     https://commons.apache.org/proper/commons-bcel/
+                asm      https://asm.ow2.io/
+             -->
+            <dependency>
+                <groupId>com.squareup</groupId>
+                <artifactId>javapoet</artifactId>
+                <version>1.9.0</version>
+                <optional>true</optional>
+            </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <useIncrementalCompilation>false</useIncrementalCompilation>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>
