@@ -1,5 +1,6 @@
-#Java 注解（Annotation）不要重复自己
+# Java 注解（Annotation）不要重复自己
 Java 注解（Annotation）又称 Java 标注，是 JDK5.0 引入的一种注释机制。
+
 ## annotation 用途
 注解本身不带作何功能，本质上它只是一种标记。
 凡标记必有意义，使用者赋予它什么样的意义，它就可以用来做什么。
@@ -56,9 +57,13 @@ javac -processorpath processor.jar -proc:only -processor x.y.z.MyAnnotationProce
 因为一轮round可能生成annotation的子集,所以可能需要再round一次。 
 在每一轮中，可能会要求annotation Processor处理在上一轮产生的源文件和类文件中找到的annotation的子集。
 1，如果将使用的annotation Processor没有实例化，则该工具将调用该annotation Processor的no-arg构造函数以创建处理器的实例。
+
 2，接下来，该工具使用适当的ProcessingEnvironment调用init方法。
+
 3，之后，该工具将调用getSupportedAnnotationTypes，getSupportedOptions和getSupportedSourceVersion。 这些方法每次运行仅调用一次，而不是在每个round中调用一次。
+
 4，该工具将在适当的时候调用Processor对象上的处理方法。 不会为每个round创建一个新的Pannotation Processor对象。
+
 5，确保它们被完全执行了。如果没有则启动下一轮round。
 
 ### annotation processor执行顺序
@@ -78,19 +83,24 @@ javac -processorpath processor.jar -proc:only -processor x.y.z.MyAnnotationProce
 
 
 ## 与annotation 有关的工具
-用于编译，代码仓库。
-maven plug
+用于编译，代码仓库：
+maven plug。
+
 这个比较好用，我们需要先编译annotation processor.
 使用annotation processor的project 依赖  annotation processor project.
 编译顺序的问题就好解决了。
 
 annotation自动编译：
 autoService
+
 android项目里常用这个配置annotation processor
 
 生成代码：
-javaPoet 相对较新，在annotation processor使用，简单好用。 
+javaPoet 相对较新，在annotation processor使用，简单好用。
+
+
 asm 老工具，功能多。不仅可用写java 代码,还可以改.class文件。
+
 bcel 老工具，功能多。不仅可用写java 代码,还可以改.class文件。
 
 ##  annotation常见用例
