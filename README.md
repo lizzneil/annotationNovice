@@ -103,6 +103,9 @@ asm 老工具，功能多。不仅可用写java 代码,还可以改.class文件�
 
 bcel 老工具，功能多。不仅可用写java 代码,还可以改.class文件。
 
+
+
+
 ##  annotation常见用例
 
 这是个例子。用到了maven plug。请先编 annotation processor。我把annotation  也放到了annotation processor项目里，所以跟常见的例子相比，它少了一个project。
@@ -112,7 +115,17 @@ https://github.com/lizzneil/annotationNovice.git
 
 
 
+## Transform
+注意： 一个工具Gradle Transform API，它 与 annotation无关。它不写JAVA代码，它是编辑class文件的通道。
+Javassist 操作字节码
 
+Transform的使用场景
+一般我们使用Transform会有下面两种场景
+
+我们需要对编译class文件做自定义的处理。
+我们需要读取编译产生的class文件，做一些其他事情，但是不需要修改它。
+
+![image/transform.png](doc/img/transform.png)
 
 
 
