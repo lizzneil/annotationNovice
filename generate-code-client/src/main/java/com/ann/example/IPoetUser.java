@@ -1,12 +1,14 @@
 package com.ann.example;
 
-import com.ann.example.annotation.AutoImplement;
+
 import com.ann.example.annotation.Mandatory;
+import com.ann.example.annotation.PoetAutoImplement;
 
 import java.time.LocalDate;
 
-@AutoImplement(as = "StringUser", builder = true)
-public interface IUser {
+
+@PoetAutoImplement(as = "PoetUser", builder = true)
+public interface IPoetUser {
 
     @Mandatory
     String getFirstName();

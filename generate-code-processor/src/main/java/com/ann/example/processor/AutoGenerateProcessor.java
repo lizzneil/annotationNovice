@@ -56,12 +56,12 @@ public class AutoGenerateProcessor extends AbstractProcessor {
                     } catch (Exception e) {
                         error(e.getMessage(), null);
                     }
-
-                    try {
-                        generateClassPoet(autoImplement, element);
-                    } catch (Exception e) {
-                        error(e.getMessage(), null);
-                    }
+//
+//                    try {
+//                        generateClassPoet(autoImplement, element);
+//                    } catch (Exception e) {
+//                        error(e.getMessage(), null);
+//                    }
                 }
             }
         }
