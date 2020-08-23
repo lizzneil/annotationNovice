@@ -1,7 +1,6 @@
 package com.ann.example.processor;
 
-//import com.ann.example.annotation.AutoImplement;
-import com.ann.example.annotation.AutoImplement;
+
 import com.ann.example.annotation.PoetAutoImplement;
 import com.squareup.javapoet.*;
 
@@ -16,22 +15,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.*;
 
-//public class PoetAutoGenerateProcessor {
-//}
-//
-//import com.ann.example.annotation.AutoImplement;
-//        import com.squareup.javapoet.*;
-//
-//        import javax.annotation.processing.*;
-//        import javax.lang.model.SourceVersion;
-//        import javax.lang.model.element.*;
-//        import javax.lang.model.type.TypeMirror;
-//        import javax.lang.model.util.ElementFilter;
-//        import javax.tools.Diagnostic;
-//        import javax.tools.JavaFileObject;
-//        import java.io.IOException;
-//        import java.io.Writer;
-//        import java.util.*;
+
 
 @SupportedAnnotationTypes(
         {"com.ann.example.annotation.PoetAutoImplement"})
@@ -208,7 +192,7 @@ public class PoetAutoGenerateProcessor extends AbstractProcessor {
         JavaFile javaFile = JavaFile.builder(pkg, annClass).build();
         try {
             javaFile.writeTo(System.out);
-            generateClass(poetUserClsName.reflectionName(), javaFile.toString());
+            generateClassFile(poetUserClsName.reflectionName(), javaFile.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -223,7 +207,7 @@ public class PoetAutoGenerateProcessor extends AbstractProcessor {
                 packageElement.get().getQualifiedName().toString() : null;
     }
 
-    private void generateClass(String qfn, String end) throws IOException {
+    private void generateClassFile(String qfn, String end) throws IOException {
         JavaFileObject sourceFile = processingEnv.getFiler().createSourceFile(qfn);
         Writer writer = sourceFile.openWriter();
         writer.write(end);

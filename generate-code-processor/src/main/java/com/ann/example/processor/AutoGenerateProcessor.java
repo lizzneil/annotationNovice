@@ -1,7 +1,6 @@
 package com.ann.example.processor;
 
 import com.ann.example.annotation.AutoImplement;
-import com.squareup.javapoet.*;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
@@ -52,16 +51,11 @@ public class AutoGenerateProcessor extends AbstractProcessor {
                 if (!error) {
                     uniqueIdCheckList.add(autoImplement.as());
                     try {
-                        generateClass(autoImplement, element);
+                        stringGenerateClass(autoImplement, element);
                     } catch (Exception e) {
                         error(e.getMessage(), null);
                     }
-//
-//                    try {
-//                        generateClassPoet(autoImplement, element);
-//                    } catch (Exception e) {
-//                        error(e.getMessage(), null);
-//                    }
+
                 }
             }
         }
@@ -107,138 +101,6 @@ public class AutoGenerateProcessor extends AbstractProcessor {
 //            .addParameter(String[].class, "args")
 //            .addStatement("$T.out.println($S)", System.class, "Hello, JavaPoet!")
 //            .build();
-    //123行
-
-    /**
-     * 用java poet生成代码。
-     * @param autoImplement
-     * @param element
-     * @throws Exception
-     */
-    private void generateClassPoet(AutoImplement autoImplement, Element element)
-            throws Exception {
-        String pkg = getPackageName(element);
-        //delegate some processing to our FieldInfo class
-        FieldInfo fieldInfo = FieldInfo.get(element);
-        //the target interface name
-        String interfaceName = getTypeName(element);
-        ClassName userGabeClsName = ClassName.get(pkg, autoImplement.as() + "Gabe");
-        ClassName userBuilderClsName = ClassName.get(pkg + "." + autoImplement.as() + "Gabe", autoImplement.as() + "GabeBuilder");
-        //自定义的class interface不能反射。
-        ClassName interfaceClsName = ClassName.get(pkg, interfaceName);
-        //两个final 成员变量
-        List<String> tMandatoryFields = fieldInfo.getMandatoryFields();
-
-        TypeSpec.Builder userClsBuilder = TypeSpec.classBuilder(userGabeClsName.simpleName())
-                .addSuperinterface(interfaceClsName)
-                .addModifiers(Modifier.PUBLIC);
-        //UserGabe成员变量 及其get方法。
-        for (Map.Entry<String, String> entry : fieldInfo.getFields().entrySet()) {
-            String name = entry.getKey();
-            String type = entry.getValue();
-            boolean mandatory = tMandatoryFields.contains(name);
-            Class tCls = Class.forName(type);
-            if (mandatory) {
-                FieldSpec tField = FieldSpec.builder(tCls, name).addModifiers(Modifier.PRIVATE, Modifier.FINAL).build();
-                userClsBuilder.addField(tField);
-            } else {
-                userClsBuilder.addField(tCls, name, Modifier.PRIVATE);
-            }
-            MethodSpec tFieldMethod = MethodSpec.methodBuilder("get" + Character.toUpperCase(name.charAt(0)) + name.substring(1))
-                    .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-                    .returns(tCls)
-                    .addStatement("return " + name)
-                    .build();
-            userClsBuilder.addMethod(tFieldMethod);
-        }
-        //UserGabe构造函数
-        MethodSpec.Builder constructorBuilder = MethodSpec.constructorBuilder()
-                .addModifiers(Modifier.PRIVATE);
-        for (String arg : tMandatoryFields) {
-            constructorBuilder = constructorBuilder.addParameter(String.class, arg);
-            constructorBuilder = constructorBuilder.addStatement("this.$N = $N", arg, arg);
-        }
-        MethodSpec constructorMethod = constructorBuilder.build();
-        userClsBuilder.addMethod(constructorMethod);
-        //内部类 UserGabeBuilder
-        TypeSpec.Builder innerClsBuilder = null;
-        if (autoImplement.builder()) {
-            innerClsBuilder = TypeSpec.classBuilder(userBuilderClsName.simpleName())
-                    .addModifiers(Modifier.PUBLIC, Modifier.STATIC);
-            //内部类UserGabeBuilder成员变量 及其set方法。
-            for (Map.Entry<String, String> entry : fieldInfo.getFields().entrySet()) {
-                String name = entry.getKey();
-                String type = entry.getValue();
-                Class tCls = Class.forName(type);
-                FieldSpec tField = FieldSpec.builder(tCls, name).addModifiers(Modifier.PRIVATE).build();
-                innerClsBuilder.addField(tField);
-                boolean mandatory = tMandatoryFields.contains(name);
-                if(!mandatory){
-                    MethodSpec tFieldMethod = MethodSpec.methodBuilder(name)
-                            .addModifiers(Modifier.PUBLIC)
-                            .addParameter(tCls,name)
-                            .returns(userBuilderClsName)
-                            .addStatement("this.$N = $N", name, name)
-                            .addStatement("return this")
-                            .build();
-                    innerClsBuilder.addMethod(tFieldMethod);
-                }
-            }
-            //UserGabeBuilder 的create 方法
-            MethodSpec.Builder createBuilder = MethodSpec.methodBuilder("create")
-                    .addModifiers(Modifier.PUBLIC,Modifier.STATIC);
-            String newStatementForCreate =  userBuilderClsName.reflectionName()+" a = new "+userBuilderClsName.reflectionName()+"(";
-            int cnt = tMandatoryFields.size();
-            for(int i = 0;i<cnt;i++){
-                if(i==(cnt-1)){
-                    newStatementForCreate = newStatementForCreate + tMandatoryFields.get(i);
-                }else{
-                    newStatementForCreate = newStatementForCreate +tMandatoryFields.get(i)+",";
-                }
-                 createBuilder.addParameter(String.class, tMandatoryFields.get(i));
-            }
-            newStatementForCreate +=")";
-            createBuilder.addStatement( newStatementForCreate);
-            createBuilder.returns(userBuilderClsName).addStatement("return a");
-            MethodSpec createMethod = createBuilder.build();
-            innerClsBuilder.addMethod(createMethod);
-            //复用了 UserGabe的构造函数
-            innerClsBuilder.addMethod(constructorMethod);
-            //UserGabeBuilder build 方法
-            MethodSpec.Builder builderMethod = MethodSpec.methodBuilder("build");
-            String newStatementForBuilder =  userGabeClsName.reflectionName()+" a = new "+userGabeClsName.reflectionName()+"(";
-            int argCnt = tMandatoryFields.size();
-            for(int i = 0;i<argCnt;i++){
-                if(i==(argCnt-1)){
-                    newStatementForBuilder = newStatementForBuilder + tMandatoryFields.get(i);
-                }else{
-                    newStatementForBuilder = newStatementForBuilder +tMandatoryFields.get(i)+",";
-                }
-            }
-            newStatementForBuilder +=")";
-            builderMethod.addStatement(newStatementForBuilder);
-            for (Map.Entry<String, String> entry : fieldInfo.getFields().entrySet()) {
-                String name = entry.getKey();
-                boolean mandatory = tMandatoryFields.contains(name);
-                if(!mandatory){
-                    builderMethod.addStatement("a."+name +"="+name);
-                }
-            }
-            builderMethod.returns(userGabeClsName);
-            builderMethod.addStatement( "return a");
-            innerClsBuilder.addMethod(builderMethod.build());
-        }
-        userClsBuilder.addType(innerClsBuilder.build()); // 设置内部类
-        TypeSpec annClass = userClsBuilder.build();
-        JavaFile javaFile = JavaFile.builder(pkg, annClass).build();
-        try {
-            javaFile.writeTo(System.out);
-            generateClass(userGabeClsName.reflectionName(), javaFile.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-//98行
 
     /**
      * 用StringBuffer直接写代码。
@@ -246,7 +108,7 @@ public class AutoGenerateProcessor extends AbstractProcessor {
      * @param element
      * @throws Exception
      */
-    private void generateClass(AutoImplement autoImplement, Element element)
+    private void stringGenerateClass(AutoImplement autoImplement, Element element)
             throws Exception {
         String pkg = getPackageName(element);
         //delegate some processing to our FieldInfo class
@@ -343,7 +205,7 @@ public class AutoGenerateProcessor extends AbstractProcessor {
             implClass.addNestedClass(builder);
         }
         //finally generate class via Filer
-        generateClass(pkg + "." + autoImplement.as(), implClass.end());
+        generateClassFile(pkg + "." + autoImplement.as(), implClass.end());
     }
 
     private String getPackageName(Element element) {
@@ -354,7 +216,7 @@ public class AutoGenerateProcessor extends AbstractProcessor {
                 packageElement.get().getQualifiedName().toString() : null;
     }
 
-    private void generateClass(String qfn, String end) throws IOException {
+    private void generateClassFile(String qfn, String end) throws IOException {
         JavaFileObject sourceFile = processingEnv.getFiler().createSourceFile(qfn);
         Writer writer = sourceFile.openWriter();
         writer.write(end);
