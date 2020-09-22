@@ -16,7 +16,6 @@ import java.io.Writer;
 import java.util.*;
 
 
-
 @SupportedAnnotationTypes(
         {"com.ann.example.annotation.PoetAutoImplement"})
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
@@ -81,8 +80,8 @@ public class PoetAutoGenerateProcessor extends AbstractProcessor {
         FieldInfo fieldInfo = FieldInfo.get(element);
         //the target interface name
         String interfaceName = getTypeName(element);
-        ClassName poetUserClsName = ClassName.get(pkg, autoImplement.as()  );
-        ClassName poetUserBuilderClsName = ClassName.get(pkg + "." + autoImplement.as() , autoImplement.as() + "Builder");
+        ClassName poetUserClsName = ClassName.get(pkg, autoImplement.as());
+        ClassName poetUserBuilderClsName = ClassName.get(pkg + "." + autoImplement.as(), autoImplement.as() + "Builder");
         //自定义的class interface不能反射。
         ClassName interfaceClsName = ClassName.get(pkg, interfaceName);
         //两个final 成员变量

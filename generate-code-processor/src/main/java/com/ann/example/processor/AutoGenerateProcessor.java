@@ -204,8 +204,10 @@ public class AutoGenerateProcessor extends AbstractProcessor {
             builder.addMethod(buildMethod);
             implClass.addNestedClass(builder);
         }
+        String tClassCode = implClass.end();
+        System.out.println(tClassCode);
         //finally generate class via Filer
-        generateClassFile(pkg + "." + autoImplement.as(), implClass.end());
+        generateClassFile(pkg + "." + autoImplement.as(), tClassCode);
     }
 
     private String getPackageName(Element element) {
