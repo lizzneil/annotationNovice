@@ -28,6 +28,7 @@ Annotation 是一个辅助类，它在 Junit、Struts、Spring 、android room�
 有黑科技可以改java文件。如 Lombok 库，它可以自动生成get set函数，在这里不讨论其实现方式。
 
 ## 手工编译annotation
+
 ![image/javac.png](doc/img/javac.png)
 
 
