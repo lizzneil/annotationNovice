@@ -21,7 +21,14 @@ Annotation 是一个辅助类，它在 Junit、Struts、Spring 、android room�
 ### 4）能够帮忙查看查看代码
 通过 @Override, @Deprecated 等，我们能很方便的了解程序的大致结构。
 
-后面我会介绍一些工具。这些工具简化了注解的使用，辅助注解高效完成其任务。
+后面我会介绍一些工具（maven plug ,google autoService）。这些工具简化了注解的使用，辅助注解高效完成其任务。
+
+## annotation 的限制
+它原本的设计只能用于产生新的java代码文件，不能修改原有java代码文件。
+有黑科技可以改java文件。如 Lombok 库，它可以自动生成get set函数，在这里不讨论其实现方式。
+
+##手工编译annotation
+![image/javac.png](doc/img/javac.png)
 
 
 ## 相同功能的工具
