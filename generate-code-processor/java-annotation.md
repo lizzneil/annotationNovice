@@ -48,6 +48,17 @@ String value2();
 |RetentionPolicy.CLASS	|refers to the .class file, available to java compiler but not to JVM . It is included in the class file.|
 |RetentionPolicy.RUNTIME	|refers to the runtime, available to java compiler and JVM .|
 
+
+|级别	|技术	|说明
+|:------| :------ |:------ |
+|SOURCE源码级别	|APT	|在编译期能够获取注解与注解声明的类，包括类中的成员信息，一般用于生成额外的辅助类。|
+|CLASS字节码	|字节码插桩	|在编译生成class之后，根据注解作为判断，通过修改class的数据来实现字节码级别的插桩操作|
+|RUNTIME运行时	|反射	|在程序运行期间，通过反射技术动态获取注解与属性元素值，来完成逻辑操作。|
+
+https://blog.csdn.net/oman001/article/details/106041869
+
+相关依赖library: org.ows2.asm:asm:7.1   org.ows2.asm:asm-commons:7.1
+
 Example to specify the RetentionPolicy
 ```java 
 @Retention(RetentionPolicy.RUNTIME)  
