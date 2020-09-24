@@ -15,8 +15,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
 
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>9</source>
+                    <target>9</target>
                     <compilerArgument>-proc:none</compilerArgument>
                 </configuration>
             </plugin>
@@ -29,5 +29,26 @@
             <version>1.9.0</version>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-commons</artifactId>
+            <version>9.0</version>
+        </dependency>
+
+
     </dependencies>
 </project>

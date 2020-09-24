@@ -16,11 +16,11 @@ public class AnnClassVisitorTest  {
 
     public static void main(String[] arg){
         try {
-            File tfile = new File("/java-tutorials/annotation/annotationNovice/generate-code-processor/src/main/java/com/ann/example/processor/PrintRunTime.java");
+            File tfile = new File("/Volumes/FastSSD/java-tutorials/annotation/annotationNovice/generate-code-processor/src/main/java/com/ann/example/PrintRunTime.class");
             if(tfile.exists()){
                 System.out.println("has file");
             }
-            FileInputStream fis = new FileInputStream("/java-tutorials/annotation/annotationNovice/generate-code-processor/src/main/java/com/ann/example/processor/PrintRunTime.java");
+            FileInputStream fis = new FileInputStream("/Volumes/FastSSD/java-tutorials/annotation/annotationNovice/generate-code-processor/src/main/java/com/ann/example/PrintRunTime.class");
             byte[] allbytes = fis.readAllBytes();
             ClassReader classReader = new ClassReader(allbytes);//fis);
 
@@ -29,7 +29,7 @@ public class AnnClassVisitorTest  {
             //开始插桩
             classReader.accept(new MyClassVisitor(Opcodes.ASM7, classWriter), ClassReader.EXPAND_FRAMES);
             byte[] bytes = classWriter.toByteArray();
-            FileOutputStream fos = new FileOutputStream("/java-tutorials/annotation/annotationNovice/generate-code-processor/src/main/java/com/ann/example/processor/NewPrintRunTime.java\"");
+            FileOutputStream fos = new FileOutputStream("/Volumes/FastSSD/java-tutorials/annotation/annotationNovice/generate-code-processor/src/main/java/com/ann/example/NewPrintRunTime.class");
             fos.write(bytes);
             fis.close();
             fos.close();
@@ -41,11 +41,11 @@ public class AnnClassVisitorTest  {
     @Test
     public void test() {
         try {
-            File tfile = new File("/java-tutorials/annotation/annotationNovice/generate-code-processor/src/main/java/com/ann/example/processor/PrintRunTime.java");
+            File tfile = new File("/Volumes/FastSSD/java-tutorials/annotation/annotationNovice/generate-code-processor/src/main/java/com/ann/example/PrintRunTime.class");
             if(tfile.exists()){
                 System.out.println("has file");
             }
-            FileInputStream fis = new FileInputStream("/java-tutorials/annotation/annotationNovice/generate-code-processor/src/main/java/com/ann/example/processor/PrintRunTime.java");
+            FileInputStream fis = new FileInputStream("/Volumes/FastSSD/java-tutorials/annotation/annotationNovice/generate-code-processor/src/main/java/com/ann/example/PrintRunTime.class");
             byte[] allbytes = fis.readAllBytes();
             ClassReader classReader = new ClassReader(allbytes);//fis);
 
@@ -54,7 +54,7 @@ public class AnnClassVisitorTest  {
             //开始插桩
             classReader.accept(new MyClassVisitor(Opcodes.ASM7, classWriter), ClassReader.EXPAND_FRAMES);
             byte[] bytes = classWriter.toByteArray();
-            FileOutputStream fos = new FileOutputStream("/java-tutorials/annotation/annotationNovice/generate-code-processor/src/main/java/com/ann/example/processor/NewPrintRunTime.java\"");
+            FileOutputStream fos = new FileOutputStream("/Volumes/FastSSD/java-tutorials/annotation/annotationNovice/generate-code-processor/src/main/java/com/ann/example/NewPrintRunTime.class\"");
             fos.write(bytes);
             fis.close();
             fos.close();
