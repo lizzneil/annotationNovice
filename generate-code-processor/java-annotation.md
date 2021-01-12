@@ -49,11 +49,11 @@ String value2();
 |RetentionPolicy.RUNTIME	|refers to the runtime, available to java compiler and JVM .|
 
 
-|级别	|技术	|说明
-|:------| :------ |:------ |
-|SOURCE源码级别	|APT	|在编译期能够获取注解与注解声明的类，包括类中的成员信息，一般用于生成额外的辅助类。|
-|CLASS字节码	|字节码插桩	|在编译生成class之后，根据注解作为判断，通过修改class的数据来实现字节码级别的插桩操作|
-|RUNTIME运行时	|反射	|在程序运行期间，通过反射技术动态获取注解与属性元素值，来完成逻辑操作。|
+|级别	|技术	|说明  |保留期
+|:------| :------ |:------ |:------ |
+|SOURCE源码级别	|APT	|在编译期能够获取注解与注解声明的类，包括类中的成员信息，一般用于生成额外的辅助类。| 只保留在源码里。class文件里没有。only in the source code ando not in the .class file or at runntime .used with build-tools that sacn the file|
+|CLASS字节码	|字节码插桩	|在编译生成class之后，根据注解作为判断，通过修改class的数据来实现字节码级别的插桩操作|存在class文件里，但反射不到.stored in the .class file  & not available at the runntime|
+|RUNTIME运行时	|反射	|在程序运行期间，通过反射技术动态获取注解与属性元素值，来完成逻辑操作。|存在class文件里，可以反射。available via reflection at runtime｜
 
 https://blog.csdn.net/oman001/article/details/106041869
 
