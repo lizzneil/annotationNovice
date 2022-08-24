@@ -120,9 +120,15 @@ bcel 老工具，功能多。不仅可用写java 代码,还可以改.class文件
 这是个例子。用到了maven plug。请先编 annotation processor。我把annotation  也放到了annotation processor项目里，所以跟常见的例子相比，它少了一个project。
 https://github.com/lizzneil/annotationNovice.git
 
+
+调用 gererate-code-processor工程里的maven. 将annotation processor 发布到本地maven,以便让generate-code-client项目引用
+![image/result.png](doc/img/publish2mvn.png)
+
 ![image/result.png](doc/img/result.png)
 
 
+如果generate-code-client有编译时有问题，请把注解生成的代码加到source目录下。
+![image/result.png](doc/img/add2src.png)
 
 ## Transform
 注意： 一个工具Gradle Transform API，它 与 annotation无关。它不写JAVA代码，它是编辑class文件的通道。
@@ -136,8 +142,9 @@ Transform的使用场景
 
 ![image/transform.png](doc/img/transform.png)
 
+git add 1
 
+git add 2
 
-
-
+git add 3
 **未完待续**
