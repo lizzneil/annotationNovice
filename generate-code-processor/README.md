@@ -111,6 +111,8 @@ bcel 老工具，功能多。不仅可用写java 代码,还可以改.class文件
 ##  annotation常见用例
 
 这是个例子。用到了maven plug。请先编 annotation processor。我把annotation  也放到了annotation processor项目里，所以跟常见的例子相比，它少了一个project。
+将annotation processor 发布到本地maven,以便让generate-code-client项目引用
+![image/result.png](doc/img/publish2mvn.png)
 https://github.com/lizzneil/annotationNovice.git
 
 ![image/result.png](doc/img/result.png)
