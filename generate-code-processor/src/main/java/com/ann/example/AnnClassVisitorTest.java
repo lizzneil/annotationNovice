@@ -16,11 +16,11 @@ public class AnnClassVisitorTest  {
 
     public static void main(String[] arg){
         try {
-            File tfile = new File("/Volumes/FastSSD/java-tutorials/annotation/annotationNovice/generate-code-processor/src/main/java/com/ann/example/PrintRunTime.class");
+            File tfile = new File("../generate-code-processor/target/classes/com/ann/example/PrintRunTime.class");
             if(tfile.exists()){
                 System.out.println("has file");
             }
-            FileInputStream fis = new FileInputStream("/Volumes/FastSSD/java-tutorials/annotation/annotationNovice/generate-code-processor/src/main/java/com/ann/example/PrintRunTime.class");
+            FileInputStream fis = new FileInputStream("../generate-code-processor/target/classes/com/ann/example/PrintRunTime.class");
             byte[] allbytes = fis.readAllBytes();
             ClassReader classReader = new ClassReader(allbytes);//fis);
 
@@ -29,7 +29,7 @@ public class AnnClassVisitorTest  {
             //开始插桩
             classReader.accept(new MyClassVisitor(Opcodes.ASM7, classWriter), ClassReader.EXPAND_FRAMES);
             byte[] bytes = classWriter.toByteArray();
-            FileOutputStream fos = new FileOutputStream("/Volumes/FastSSD/java-tutorials/annotation/annotationNovice/generate-code-processor/src/main/java/com/ann/example/NewPrintRunTime.class");
+            FileOutputStream fos = new FileOutputStream("../generate-code-processor/src/main/java/com/ann/example/PrintRunTime.class");
             fos.write(bytes);
             fis.close();
             fos.close();
@@ -41,11 +41,11 @@ public class AnnClassVisitorTest  {
     @Test
     public void test() {
         try {
-            File tfile = new File("/Volumes/FastSSD/java-tutorials/annotation/annotationNovice/generate-code-processor/src/main/java/com/ann/example/PrintRunTime.class");
+            File tfile = new File("../generate-code-processor/target/classes/com/ann/example/PrintRunTime.class");
             if(tfile.exists()){
                 System.out.println("has file");
             }
-            FileInputStream fis = new FileInputStream("/Volumes/FastSSD/java-tutorials/annotation/annotationNovice/generate-code-processor/src/main/java/com/ann/example/PrintRunTime.class");
+            FileInputStream fis = new FileInputStream("../generate-code-processor/target/classes/com/ann/example/PrintRunTime.class");
             byte[] allbytes = fis.readAllBytes();
             ClassReader classReader = new ClassReader(allbytes);//fis);
 
@@ -54,7 +54,7 @@ public class AnnClassVisitorTest  {
             //开始插桩
             classReader.accept(new MyClassVisitor(Opcodes.ASM7, classWriter), ClassReader.EXPAND_FRAMES);
             byte[] bytes = classWriter.toByteArray();
-            FileOutputStream fos = new FileOutputStream("/Volumes/FastSSD/java-tutorials/annotation/annotationNovice/generate-code-processor/src/main/java/com/ann/example/NewPrintRunTime.class\"");
+            FileOutputStream fos = new FileOutputStream("../generate-code-processor/src/main/java/com/ann/example/PrintRunTime.class\"");
             fos.write(bytes);
             fis.close();
             fos.close();
@@ -83,7 +83,7 @@ public class AnnClassVisitorTest  {
         @Override
         public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
             MethodVisitor methodVisitor = super.visitMethod(access, name, descriptor, signature, exceptions);
-            System.out.println("visitMethod name:" + name + "-descriptor:" + descriptor + "--signature:" + signature);
+            System.out.println("visitMethod name:[" + name + "]\tdescriptor:[" + descriptor + "]\tsignature:[" + signature+"]");
             return new MyMethodVisitor(api, methodVisitor, access, name, descriptor);
         }
     }
@@ -105,6 +105,7 @@ public class AnnClassVisitorTest  {
          */
         protected MyMethodVisitor(int api, MethodVisitor methodVisitor, int access, String name, String descriptor) {
             super(api, methodVisitor, access, name, descriptor);
+
         }
 
         int start;
@@ -162,19 +163,22 @@ public class AnnClassVisitorTest  {
 //            INVOKEVIRTUAL java/io/ PrintStream.println (Ljava/lang/String;)V
             invokeVirtual(Type.getType("Ljava/lang/StringBuilder;"), new Method("append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;"));
             invokeVirtual(Type.getType("Ljava/lang/StringBuilder;"), new Method("toString", "()Ljava/lang/String;"));
-            invokeVirtual(Type.getType("Ljava/io/PrintStream;"), new Method("println", "(Ljava/lang/String;)V;"));
+            invokeVirtual(Type.getType("Ljava/io/PrintStream;"), new Method("println", "(Ljava/lang/String;)V"));
         }
 
         boolean injected = false;
 
         @Override
         public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-            System.out.println(getName() + "--visitAnnotation-->" + descriptor);
+            System.out.println(getName() + "--visitAnnotation-->descriptor[" + descriptor+"]\tvisible["+visible+"]");
             if ("Ljava/lang/Deprecated;".equals(descriptor)) {
                 injected = true;
+
             }
+            System.out.println("inject["+injected+"]");
             return super.visitAnnotation(descriptor, visible);
         }
     }
 
 }
+
